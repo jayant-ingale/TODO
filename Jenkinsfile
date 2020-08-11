@@ -11,14 +11,14 @@ pipeline {
                 sh 'truffle compile'
             }
         }
-        stage('test') { 
+        stage('Test') { 
             steps {
                 sh 'truffle test' 
             }
         }
         stage('Deploy') { 
             steps {
-                sh 'truffle migrate --reset ropsten' 
+                sh 'truffle migrate --reset --network ropsten' 
             }
         }
     }
