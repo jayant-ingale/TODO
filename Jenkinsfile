@@ -2,23 +2,39 @@ pipeline {
     agent any
     tools {nodejs "nodejs"}
     stages {
-        stage('Build') {
+        stage('CI-Install Truffle') {
             steps {
-                sh 'npm install'
+                   sh '''
+                           echo "install truffle v_5.1.4"
+                           npm install -g truffle@5.1.4
+                        '''
             }
         }
-        stage('Compile') {
+        stage('CI-Install Packages') {
+         steps {
+                        sh '''
+                                echo "install all dependencies with yarn"
+                                npm install
+                        '''
+                    }
+        }
+       stage('CI-Run Test') { 
+         steps {
+                        sh '''
+                                echo "truffle rune"
+                                truffle test
+                        '''
+                    }
+        }
+        stage('CI-Run Compile') {
             steps {
                 sh 'truffle compile'
             }
         }
-        stage('Test') { 
+        
+        stage('CI-Run Deploy') { 
             steps {
-                sh 'truffle test' 
-            }
-        }
-        stage('Deploy') { 
-            steps {
+                
                 sh 'truffle migrate --reset --network ropsten' 
             }
         }
