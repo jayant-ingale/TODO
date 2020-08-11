@@ -1,11 +1,17 @@
 pipeline {
     agent any
-    node {
+    
+    stages {
+      stage('install node')
+      {
+        steps {
+          node {
       withEnv(["PATH+NODE=${tool name: 'node-5.10.1', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'}/bin"]) {
         sh 'node -v'
       }
     }
-    stages {
+        }
+      }
         stage('Build') {
             steps {
                 sh 'npm install'
